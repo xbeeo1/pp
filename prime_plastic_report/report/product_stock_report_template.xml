@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="product_stock_report_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <h2 colspan="6" style="text-align: center;">
+                        Product Stock Report
+                    </h2>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    <b>Warehouse:</b>
+                                </div>
+                                <div class="col-8">
+                                    <span t-esc="o.warehouse_id.name"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    <b>Printed by:</b>
+                                </div>
+                                <div class="col-8">
+                                    <span t-esc="request.env.user.name"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6">
+
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-4">
+                                    <b>Printed Date:</b>
+                                </div>
+                                <div class="col-8">
+                                    <t t-set="now" t-value="datetime.datetime.now()+ datetime.timedelta(hours=5)"/>
+                                    <t t-esc="now.strftime('%d/%m/%Y %I:%M:%S %p')"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <table class="o_has_total_table table o_main_table table-borderless" style="font-size: 12px;">
+                                <thead style="display: table-row-group">
+                                    <tr style="background-color: #b3cccc; color:#000000;">
+                                        <td style="font-weight: bold" class="text-center">Sr#</td>
+                                        <td style="font-weight: bold;" class="text-start">Reference</td>
+                                        <td style="font-weight: bold;" class="text-start">Item Name</td>
+                                        <td style="font-weight: bold;" class="text-center">Color</td>
+                                        <td style="font-weight: bold;" class="text-center">Model</td>
+                                        <td style="font-weight: bold;" class="text-center">Material</td>
+                                        <td style="font-weight: bold;" class="text-center">Stock(UOM)</td>
+                                        <td style="font-weight: bold;" class="text-center">On Hand Qty</td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="report_data" t-as="product">
+                                        <tr style="background-color: #d1e0e0;">
+                                            <td style="font-weight: bold">
+                                                <t t-esc="product['product_name']"/>
+                                            </td>
+                                            <td class="text-center" style="font-weight: bold">
+                                                <t t-esc="product['code_prod']"/>
+                                            </td>
+                                            <td></td>
+                                            <td class="text-center" style="font-weight: bold">
+                                                <t t-esc="product['color_prod']"/>
+                                            </td>
+                                            <td class="text-center" style="font-weight: bold">
+                                                <t t-esc="product['model_prod']"/>
+                                            </td>
+                                            <td class="text-center" style="font-weight: bold">
+                                                <t t-esc="product['material_prod']"/>
+                                            </td>
+                                            <td class="text-center" style="font-weight: bold">
+                                                <t t-esc="product['unit_prod']"/>
+                                            </td>
+                                            <td class="text-center" style="font-weight: bold">
+                                                <t t-esc="product['onhand_qty_prod']"/>
+                                            </td>
+                                        </tr>
+                                        <t t-set="sr" t-value="1"/>
+                                        <t t-foreach="product['components']" t-as="line">
+                                            <tr>
+                                                <td class="text-center">
+                                                    <t t-esc="sr"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line['code']"/>
+                                                </td>
+                                                <td>
+                                                    <t t-esc="line['component_name']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <t t-esc="line['color']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <t t-esc="line['material']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <t t-esc="line['model']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <t t-esc="line['unit']"/>
+                                                </td>
+                                                <td class="text-center">
+                                                    <t t-esc="line['onhand_qty']"/>
+                                                </td>
+                                            </tr>
+
+                                            <t t-set="sr" t-value="sr + 1"/>
+                                        </t>
+                                    </t>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+
+    </template>
+
+</odoo>
