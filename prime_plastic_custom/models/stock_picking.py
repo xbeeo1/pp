@@ -8,10 +8,12 @@ class StockPickingInherit(models.Model):
     _inherit = 'stock.picking'
     _description = 'Stock Picking'
 
-    @api.model
-    def create(self, vals):
+    @api.model_create_multi
+    def create(self, vals_list):
         confirm_user = self.env.context.get('confirm_user_id')
-        if confirm_user:
-            vals['user_id'] = confirm_user
 
-        return super().create(vals)
+        if confirm_user:
+            for vals in vals_list:
+                vals['user_id'] = confirm_user
+
+        return super().create(vals_list)
